@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ft_hangouts</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_nr">Phone Number</string>
+    <string name="email">Email</string>
+    <string name="street">Street</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+
 </resources>

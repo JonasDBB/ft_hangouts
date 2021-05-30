@@ -74,9 +74,9 @@ public class dbHandler extends SQLiteOpenHelper {
         return contact;
     }
 
-    public List<Contact> getAllContacts()
+    public ArrayList<Contact> getAllContacts()
     {
-        List<Contact> contactList = new ArrayList<Contact>();
+        ArrayList<Contact> contactList = new ArrayList<Contact>();
 
         String selectQuery = "SELECT * FROM " + TABLE_CONTACTS;
 
@@ -101,7 +101,7 @@ public class dbHandler extends SQLiteOpenHelper {
         return contactList;
     }
 
-    public int updateContact(Contact contact)
+    public boolean updateContact(Contact contact, Integer id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -111,14 +111,15 @@ public class dbHandler extends SQLiteOpenHelper {
         values.put(KEY_EMAIL, contact.getEmail());
         values.put(KEY_STREET, contact.getStreet());
 
-        return db.update(TABLE_CONTACTS, values, KEY_ID + "= ?", new String[] {String.valueOf(contact.getId())});
+        if (db.update(TABLE_CONTACTS, values, KEY_ID + "= ?", new String[] {String.valueOf(id)}) == -1)
+            return false;
+        return true;
     }
 
-    public void deleteContact(Contact contact)
+    public void deleteContact(int id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_CONTACTS, KEY_ID + " = ?", new String[] {String.valueOf(contact.getId())});
-        db.close();
+        db.delete(TABLE_CONTACTS, KEY_ID + " = ?", new String[] {String.valueOf(id)});
     }
 
     public int getContactCount()
