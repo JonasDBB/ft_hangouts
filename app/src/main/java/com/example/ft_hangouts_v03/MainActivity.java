@@ -15,7 +15,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    dbHandler db = new dbHandler(this);
     ListView contactList;
 
     @Override
@@ -23,28 +22,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db.addContact(new Contact("Jonas", "BB", "1234", "j@bb.com", "home lane"));
-        db.addContact(new Contact("dan", "bebe", "4321", "da@bebo.com", "far bvd"));
-        db.addContact(new Contact("me", "yes", "0000", "me@you.com", "near st"));
 
-        contactList = findViewById(R.id.listView);
-        ArrayList<Contact> contactdata = db.getAllContacts();
-        contactList.setAdapter(new customArrayAdapter(contactdata, this));
+        dbHandler db = new dbHandler(this);
 
-        contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Contact contactId = (Contact) parent.getItemAtPosition(position);
-                Intent intent = new Intent(getApplicationContext(), DisplayContact.class);
+        db.addContact(new Contact("Jonas", "BB", "1234", "j@bb.com", "homelane"));
+//        db.addContact(new Contact("dan", "bebe", "4321", "da@bebo.com", "farbvd"));
+//        db.addContact(new Contact("me", "yes", "0000", "me@you.com", "nearst"));
 
-                Bundle dataBundle = new Bundle();
-                int cId = contactId.getId();
-                dataBundle.putInt("id", cId);
-                intent.putExtras(dataBundle);
-
-                startActivity(intent);
-            }
-        });
+//        contactList = findViewById(R.id.listView);
+//        ArrayList<Contact> contactdata = db.getAllContacts();
+//        contactList.setAdapter(new customArrayAdapter(contactdata, this));
+//
+//        contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Contact contactId = (Contact) parent.getItemAtPosition(position);
+//                Intent intent = new Intent(getApplicationContext(), DisplayContact.class);
+//
+//                Bundle dataBundle = new Bundle();
+//                int cId = contactId.getId();
+//                dataBundle.putInt("id", cId);
+//                intent.putExtras(dataBundle);
+//
+//                startActivity(intent);
+//            }
+//        });
     }
-
 }

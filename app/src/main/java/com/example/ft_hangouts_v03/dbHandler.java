@@ -13,12 +13,12 @@ public class dbHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "contactsManager";
     private static final String TABLE_CONTACTS = "contacts";
-    private static final String KEY_ID = "id";
-    private static final String KEY_F_NAME = "first_name";
-    private static final String KEY_L_NAME = "last_name";
-    private static final String KEY_PH_NR = "phone_nr";
-    private static final String KEY_EMAIL = "email";
-    private static final String KEY_STREET = "street";
+    private static final String KEY_ID = "ID";
+    private static final String KEY_F_NAME = "FIRSTNAME";
+    private static final String KEY_L_NAME = "LASTNAME";
+    private static final String KEY_PH_NR = "PHONENR";
+    private static final String KEY_EMAIL = "EMAIL";
+    private static final String KEY_STREET = "STREET";
 
     public dbHandler(Context context)
     {
@@ -28,13 +28,13 @@ public class dbHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String CREATE_MY_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "(" +
-                KEY_ID + "INTEGER PRIMARY KEY," +
-                KEY_F_NAME + "TEXT," +
-                KEY_L_NAME + "TEXT," +
-                KEY_PH_NR + "TEXT," +
-                KEY_EMAIL + "TEXT," +
-                KEY_STREET + "TEXT" + ")";
+        String CREATE_MY_TABLE = "create table " + TABLE_CONTACTS + "(" +
+                KEY_ID + "integer primary key," +
+                KEY_F_NAME + "text," +
+                KEY_L_NAME + "text," +
+                KEY_PH_NR + "text," +
+                KEY_EMAIL + "text," +
+                KEY_STREET + "text" + ")";
         db.execSQL(CREATE_MY_TABLE);
     }
 
@@ -45,9 +45,9 @@ public class dbHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addContact(Contact contact)
+    public void addContact(Contact contact)
     {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_F_NAME, contact.getFirstName());
@@ -64,7 +64,7 @@ public class dbHandler extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_CONTACTS, new String[] {KEY_ID, KEY_F_NAME, KEY_L_NAME, KEY_PH_NR, KEY_EMAIL, KEY_STREET}, KEY_ID + "=?",
+        Cursor cursor = db.query(TABLE_CONTACTS, new String[]{KEY_ID, KEY_F_NAME, KEY_L_NAME, KEY_PH_NR, KEY_EMAIL, KEY_STREET}, KEY_ID + "=?",
                 new String[] {String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -98,6 +98,7 @@ public class dbHandler extends SQLiteOpenHelper {
                 contactList.add(contact);
             } while (cursor.moveToNext());
         }
+
         return contactList;
     }
 
@@ -112,7 +113,11 @@ public class dbHandler extends SQLiteOpenHelper {
         values.put(KEY_STREET, contact.getStreet());
 
         if (db.update(TABLE_CONTACTS, values, KEY_ID + "= ?", new String[] {String.valueOf(id)}) == -1)
+        {
+            db.close();
             return false;
+        }
+        db.close();
         return true;
     }
 
@@ -120,6 +125,7 @@ public class dbHandler extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_CONTACTS, KEY_ID + " = ?", new String[] {String.valueOf(id)});
+        db.close();
     }
 
     public int getContactCount()
